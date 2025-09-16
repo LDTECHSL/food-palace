@@ -1,30 +1,59 @@
 import "../styles/navbar.css";
-import logo from "../assets/food_palace-transparent.png"
+import logo from "../assets/food_palace-transparent.png";
 import { Divider } from "@mui/material";
-import Home from "../pages/Home";
+import { ReactElement } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Navbar() {
-    return (
-        <>
-            <div className="navbar-outer">
-                <div className="navbar-logo-inner">
-                    <img className="navbar-logo" src={logo} alt="Food Palace Logo" />
-                </div>
+interface Props {
+  children: ReactElement;
+}
 
-                <Divider />
+export default function Navbar({ children }: Readonly<Props>) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-                <div className="navbar-links-inner">
-                    <a className="navbar-link" href="#">Breakfast</a>
-                    <a className="navbar-link" href="#">Lunch</a>
-                    <a className="navbar-link" href="#">Dinner</a>
-                    <a className="navbar-link" href="#">Bakery</a>
-                    <a className="navbar-link" href="#">Drinks</a>
-                    <a className="navbar-link" href="#">Deserts</a>
-                    <a className="navbar-link" href="#">Orders</a>
-                </div>
+  const links = [
+    { name: "Breakfast", path: "/breakfast" },
+    { name: "Lunch", path: "/lunch" },
+    { name: "Dinner", path: "/dinner" },
+    { name: "Bakery", path: "/bakery" },
+    { name: "Drinks", path: "/drinks" },
+    { name: "Deserts", path: "/deserts" },
+    { name: "Orders", path: "/orders" },
+  ];
 
-            </div>
-            <Home />
-        </>
-    )
+  return (
+    <>
+      <div className="navbar-outer">
+        <div className="navbar-logo-inner">
+          <img
+            style={{ cursor: "pointer" }}
+            className="navbar-logo"
+            onClick={() => {
+              navigate("/");
+            }}
+            src={logo}
+            alt="Food Palace Logo"
+          />
+        </div>
+
+        <Divider />
+
+        <div className="navbar-links-inner">
+          {links.map((link) => (
+            <a
+              key={link.path}
+              className={`navbar-link ${
+                location.pathname === link.path ? "active" : ""
+              }`}
+              onClick={() => navigate(link.path)}
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+      </div>
+      {children}
+    </>
+  );
 }
