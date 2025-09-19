@@ -43,3 +43,44 @@
     background-color: var(--primary-color);
     color: white;
 }
+
+*{
+    /* border: 1px solid red; */
+}
+
+.container{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 10px 0px;
+}
+
+.menu-inner{
+    width: 60%;
+    height: auto;
+    padding: 15px 0px;    
+}
+
+.menu-inner1{
+    width: 35%;
+    height: 80vh;
+    padding: 15px;
+    overflow-y: hidden;
+    border: 1px solid rgb(207, 206, 206);
+}
+
+.btn-primary{
+    padding: 10px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary:disabled{
+    background-color: grey;
+    cursor: not-allowed;
+}

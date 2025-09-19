@@ -12,6 +12,7 @@ import Bakery from './pages/Bakery';
 import Drinks from './pages/Drinks';
 import Deserts from './pages/Deserts';
 import Orders from './pages/Orders';
+import Menu from './pages/admin/Menu';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
         <AdminNavbar>
           <Routes>
             <Route path='/admin/dashboard' element={<Dashboard />} />
+            <Route path='/admin/menu' element={<Menu />} />
           </Routes>
         </AdminNavbar>
       ) : (

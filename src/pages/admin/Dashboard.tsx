@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BreadCrumb from "../../components/BreadCrumb";
 
 export default function Dashboard() {
 
@@ -15,7 +16,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            <h1>Admin Dashboard </h1>
+            <BreadCrumb title="Dashboard" />
         </div>
     )
 }
