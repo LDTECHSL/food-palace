@@ -1,4 +1,4 @@
-import { Button, Checkbox, Dialog, Divider, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Button, Checkbox, Dialog, Divider, FormControl, FormControlLabel, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Radio, RadioGroup, Select, SelectChangeEvent, TextField } from "@mui/material";
 import BreadCrumb from "../../components/BreadCrumb";
 import "../../styles/main.css"
 import { useEffect, useState } from "react";
@@ -10,7 +10,8 @@ const categories = [
     { id: 2, name: "Lunch" },
     { id: 3, name: "Dinner" },
     { id: 4, name: "Dessert" },
-    { id: 5, name: "Bakery" }
+    { id: 5, name: "Bakery" },
+    { id: 6, name: "Drink" }
 ]
 
 export default function Menu() {
@@ -20,10 +21,12 @@ export default function Menu() {
     const [smallprice, setSmallPrice] = useState<number | "">("");
     const [mediumprice, setMediumPrice] = useState<number | "">("");
     const [largeprice, setLargePrice] = useState<number | "">("");
+    const [price, setPrice] = useState<number | "">("");
     const [selected, setSelected] = useState<string[]>([]);
     const [image, setImage] = useState<string>("");
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [menuItems, setMenuItems] = useState<any[]>([]);
+    const [radioValue, setRadioValue] = useState<string>("price-range");
 
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
@@ -57,6 +60,7 @@ export default function Menu() {
             largeprice,
             selected,
             image,
+            price,
         };
 
         menuItems.push(newItem);
@@ -68,6 +72,32 @@ export default function Menu() {
         handleGetMenuItems();
     };
 
+    const updateForm = () => {
+
+        const existing = localStorage.getItem("menu");
+        const menuItems = existing ? JSON.parse(existing) : [];
+
+        const updatedItem = {
+            name,
+            description,
+            smallprice,
+            mediumprice,
+            largeprice,
+            selected,
+            image,
+            price,
+        }
+
+        if (selectedIndex > -1) {
+            menuItems[selectedIndex] = updatedItem;
+            localStorage.setItem("menu", JSON.stringify(menuItems));
+            resetForm();
+            showSuccess("Menu item updated successfully!");
+            handleGetMenuItems();
+        }
+
+    }
+
     const resetForm = () => {
         setName("");
         setDescription("");
@@ -77,6 +107,8 @@ export default function Menu() {
         setSelected([]);
         setImage("");
         setIsUpdateMode(false);
+        setPrice("");
+        setRadioValue("price-range");
     };
 
     const filteredMenuItems = menuItems.filter(item =>
@@ -100,6 +132,14 @@ export default function Menu() {
         if (item) {
             setName(item.name);
             setDescription(item.description);
+
+            if(item.price !== ""){
+                setRadioValue("price");
+            }else{
+                setRadioValue("price-range");
+            }
+
+            setPrice(item.price);
             setSmallPrice(item.smallprice);
             setMediumPrice(item.mediumprice);
             setLargePrice(item.largeprice);
@@ -169,56 +209,94 @@ export default function Menu() {
 
                         <Divider style={{ width: "100%", margin: "10px 0" }} />
 
-                        <Grid size={12}>
-                            <InputLabel style={{ color: "#000000ff", fontWeight: 600, fontSize: 14, marginBottom: 4 }}>Price Range vs Portion Size</InputLabel>
-                        </Grid>
-
-                        <Grid size={4}>
-                            <TextField
-                                value={smallprice}
-                                onChange={(e) => {
-                                    const val = e.target.value;
-                                    if (/^\d*$/.test(val)) {   // only digits allowed
-                                        setSmallPrice(val === "" ? "" : Number(val));
-                                    }
-                                }}
-                                fullWidth
-                                size="small"
-                                label="Small - Price"
-                                variant="outlined"
-                            />                        </Grid>
-                        <Grid size={4}>
-                            <TextField
-                                value={mediumprice}
-                                onChange={(e) => {
-                                    const val = e.target.value;
-                                    if (/^\d*$/.test(val)) {   // only digits allowed
-                                        setMediumPrice(val === "" ? "" : Number(val));
-                                    }
-                                }}
-                                fullWidth
-                                size="small"
-                                label="Medium - Price"
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid size={4}>
-                            <TextField
-                                value={largeprice}
-                                onChange={(e) => {
-                                    const val = e.target.value;
-                                    if (/^\d*$/.test(val)) {   // only digits allowed
-                                        setLargePrice(val === "" ? "" : Number(val));
-                                    }
-                                }}
-                                fullWidth
-                                size="small"
-                                label="Large - Price"
-                                variant="outlined"
-                            />
-                        </Grid>
+                        <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={radioValue} onChange={(e) => {
+                            setRadioValue(e.target.value)
+                            setSmallPrice("");
+                            setMediumPrice("");
+                            setLargePrice("");
+                            setPrice("");
+                        }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 10 }}>
+                                <FormControlLabel value="price" control={<Radio />} label="Price" />
+                                <FormControlLabel value="price-range" control={<Radio />} label="Price Range" />
+                            </div>
+                        </RadioGroup>
 
                         <Grid size={12}>
+                            <InputLabel style={{ color: "#000000ff", fontWeight: 600, fontSize: 14, marginBottom: 4 }}>
+                               {radioValue === "price-range" ? "Price Range vs Portion Size" : ""}
+                            </InputLabel>
+                        </Grid>
+
+                        {radioValue === "price-range" && (
+                            <>
+                                <Grid size={4}>
+                                    <TextField
+                                        value={smallprice}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (/^\d*$/.test(val)) {   // only digits allowed
+                                                setSmallPrice(val === "" ? "" : Number(val));
+                                            }
+                                        }}
+                                        fullWidth
+                                        size="small"
+                                        label="Small - Price"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid size={4}>
+                                    <TextField
+                                        value={mediumprice}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (/^\d*$/.test(val)) {   // only digits allowed
+                                                setMediumPrice(val === "" ? "" : Number(val));
+                                            }
+                                        }}
+                                        fullWidth
+                                        size="small"
+                                        label="Medium - Price"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid size={4}>
+                                    <TextField
+                                        value={largeprice}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (/^\d*$/.test(val)) {   // only digits allowed
+                                                setLargePrice(val === "" ? "" : Number(val));
+                                            }
+                                        }}
+                                        fullWidth
+                                        size="small"
+                                        label="Large - Price"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                            </>
+                        )}
+
+                        {radioValue === "price" && (
+                            <Grid size={4}>
+                                <TextField
+                                    value={price}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (/^\d*$/.test(val)) {   // only digits allowed
+                                            setPrice(val === "" ? "" : Number(val));
+                                        }
+                                    }}
+                                    fullWidth
+                                    size="small"
+                                    label="Price"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                        )}
+
+                        <Grid size={radioValue === "price" ? 8 : 12}>
                             <TextField value={image} onChange={(e) => setImage(e.target.value)} fullWidth size="small" label="Item Image URL" variant="outlined" />
                         </Grid>
 
@@ -229,12 +307,12 @@ export default function Menu() {
                         <Grid size={12} style={{ textAlign: "right" }}>
                             {isUpdateMode ? (
                                 <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
-                                    <button disabled={!name || !description || !smallprice || !mediumprice || !largeprice || !image || selected.length === 0} onClick={resetForm} className="btn btn-primary">Reset</button>
+                                    <button disabled={!name || !description || !smallprice || !mediumprice || !largeprice || !image || selected.length === 0} onClick={resetForm} className="btn btn-secondary">Reset</button>
 
-                                    <button disabled={!name || !description || !smallprice || !mediumprice || !largeprice || !image || selected.length === 0} onClick={saveForm} className="btn btn-primary">Update Item</button>
+                                    <button disabled={!name || !description || !smallprice || !mediumprice || !largeprice || !image || selected.length === 0} onClick={updateForm} className="btn btn-primary">Update Item</button>
                                 </div>
                             ) : (
-                                <button disabled={!name || !description || !smallprice || !mediumprice || !largeprice || !image || selected.length === 0} onClick={saveForm} className="btn btn-primary">Save Item</button>
+                                <button disabled={!name || !description || !image || selected.length === 0 || radioValue === "price" ? (!price) : (!smallprice || !mediumprice || !largeprice)} onClick={saveForm} className="btn btn-primary">Save Item</button>
                             )}
                         </Grid>
                     </Grid>
@@ -265,6 +343,7 @@ export default function Menu() {
                                 <h4>{index + 1}. {item.name}</h4>
                                 <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
                                     <Edit onClick={() => {
+                                        setSelectedIndex(index);
                                         handleFetchForm(index);
                                         setIsUpdateMode(true);
                                     }} style={{ cursor: "pointer", width: 20 }} color="primary" />

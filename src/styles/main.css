@@ -84,3 +84,17 @@
     background-color: grey;
     cursor: not-allowed;
 }
+
+.btn-secondary{
+    padding: 10px 15px;
+    background-color: rgb(165, 108, 2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-secondary:disabled{
+    background-color: grey;
+    cursor: not-allowed;
+}
