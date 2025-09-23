@@ -13,6 +13,7 @@ import Drinks from './pages/Drinks';
 import Deserts from './pages/Deserts';
 import Orders from './pages/Orders';
 import Menu from './pages/admin/Menu';
+import OrderMaintenance from './pages/admin/OrderMaintenance';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/menu' element={<Menu />} />
+            <Route path='/admin/orders' element={<OrderMaintenance />} />
           </Routes>
         </AdminNavbar>
       ) : (

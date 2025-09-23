@@ -91,6 +91,18 @@ interface Props {
     children: ReactElement;
 }
 
+export interface NavChild {
+    name: string;
+    path: string;
+}
+
+export interface NavItem {
+    name: string;
+    icon: React.ReactElement;
+    path?: string;
+    children?: NavChild[];  // ✅ optional children
+}
+
 export default function AdminNavbar({ children }: Readonly<Props>) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("md")); // mobile detection
@@ -112,7 +124,7 @@ export default function AdminNavbar({ children }: Readonly<Props>) {
         navigate("/admin/login");
     };
 
-    const drawerItems = [
+    const drawerItems : NavItem[] = [
         {
             name: "Dashboard",
             icon: <RocketLaunchTwoTone style={{ fontSize: "18px" }} />,
@@ -126,11 +138,8 @@ export default function AdminNavbar({ children }: Readonly<Props>) {
         {
             name: "Orders",
             icon: <EmojiEventsTwoTone style={{ fontSize: "18px" }} />,
-            children: [
-                { name: "Current", path: "/admin/orders/current" },
-                { name: "History", path: "/admin/orders/history" }
-            ],
-        }
+            path: "/admin/orders",
+        },
     ];
 
     const renderDrawerContent = (

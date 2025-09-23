@@ -1,6 +1,6 @@
 import { Search } from "@mui/icons-material"
 import "../styles/home.css"
-import { Divider, FormControlLabel, Radio, RadioGroup } from "@mui/material"
+import { Button, Divider, FormControlLabel, Radio, RadioGroup } from "@mui/material"
 import { useEffect } from "react";
 import React from "react";
 
@@ -24,7 +24,7 @@ export default function Bakery() {
 
         // initialize radio values for items without fixed price
         const initialValues: { [key: number]: string } = {};
-        items.forEach((_:any, idx:any) => {
+        items.forEach((_: any, idx: any) => {
             initialValues[idx] = "smallprice"; // default
         });
         setRadioValues(initialValues);
@@ -41,6 +41,13 @@ export default function Bakery() {
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleAddToPlate = (item: any, selectedSize: string) => {
+        const plate = sessionStorage.getItem("plate");
+        const updatedPlate = plate ? JSON.parse(plate) : [];
+        updatedPlate.push({ ...item, selectedSize });
+        sessionStorage.setItem("plate", JSON.stringify(updatedPlate));
+    }
 
     return (
         <div className="user-outer">
@@ -107,6 +114,9 @@ export default function Bakery() {
                                     />
                                 </RadioGroup>
                             )}
+
+                            <Button variant="contained" onClick={() => handleAddToPlate(item, selectedSize)} className="add-to-cart-button">Add to Plate</Button>
+
                         </div>
                     );
                 })}

@@ -207,6 +207,88 @@
     margin-left: 15px;
 }
 
+.plate-button-outer{
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    color: white;
+    border: 2px solid black;
+    position: fixed;
+    z-index: 1000;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.cart-item-count{
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+}
+
+.cart-dialog-content{
+    width: 500px;
+    height: auto;
+    max-height: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.cart-items{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cart-item{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.cart-item-size{
+    font-size: 13px;
+    color: gray;
+    margin-left: 10px;
+}
+
+.primary-button{
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.secondary-button{
+    background-color: white !important;
+    color: var(--primary-color) !important;
+    font-weight: bold !important;
+    border: 2px solid var(--primary-color) !important;
+}
+
 @media (max-width: 426px){
     .username{
         display: none !important;
