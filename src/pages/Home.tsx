@@ -3,6 +3,7 @@ import "../styles/home.css";
 import food1 from "../assets/food1.jpg";
 import food2 from "../assets/food2.jpg";
 import food3 from "../assets/food3.jpg";
+import Footer from "./Footer";
 
 const images = [food1, food2, food3];
 
@@ -18,12 +19,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="home-outer">
-      <img
-        className="home-food-img"
-        src={images[currentIndex]}
-        alt={`Delicious Food ${currentIndex + 1}`}
-      />
-    </div>
+    <>
+      <div className="home-outer">
+        <img
+          className="home-food-img"
+          src={images[currentIndex]}
+          alt={`Delicious Food ${currentIndex + 1}`}
+        />
+      </div>
+
+      <Footer />
+    </>
+
   );
 }

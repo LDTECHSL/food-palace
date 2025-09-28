@@ -3,6 +3,7 @@ import "../styles/home.css"
 import { Button, Divider, FormControlLabel, Radio, RadioGroup } from "@mui/material"
 import { useEffect } from "react";
 import React from "react";
+import Footer from "./Footer";
 
 export default function Breakfast() {
     const [items, setItems] = React.useState<any[]>([]);
@@ -50,6 +51,7 @@ export default function Breakfast() {
     }
 
     return (
+        <>
         <div className="user-outer">
             <div className="search-bar-outer">
                 <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" type="text" placeholder="Search" />
@@ -121,5 +123,8 @@ export default function Breakfast() {
                 })}
             </div>
         </div>
+        <Footer />
+        </>
+        
     );
 }
