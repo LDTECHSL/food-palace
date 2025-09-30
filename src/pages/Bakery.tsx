@@ -3,6 +3,7 @@ import "../styles/home.css"
 import { Button, Divider, FormControlLabel, Radio, RadioGroup } from "@mui/material"
 import { useEffect } from "react";
 import React from "react";
+import Footer from "./Footer";
 
 export default function Bakery() {
     const [items, setItems] = React.useState<any[]>([]);
@@ -50,77 +51,82 @@ export default function Bakery() {
     }
 
     return (
-        <div className="user-outer">
-            <div className="search-bar-outer">
-                <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" type="text" placeholder="Search" />
-                <button className="search-button">
-                    <Search />
-                </button>
+
+        <>
+            <div className="user-outer">
+                <div className="search-bar-outer">
+                    <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" type="text" placeholder="Search" />
+                    <button className="search-button">
+                        <Search />
+                    </button>
+                </div>
+
+                <Divider style={{ width: "100%", margin: "10px 0" }} />
+
+                <div className="items-outer">
+                    {filteredItems.map((item, index) => {
+                        const selectedSize = radioValues[index] || "smallprice";
+                        const price = item.price === ""
+                            ? item[selectedSize]
+                            : item.price;
+
+                        return (
+                            <div key={index} className="item-card">
+                                <img src={item.image} alt={item.name} className="item-image" />
+                                <h3 className="item-name">{item.name}</h3>
+                                <p className="item-description">{item.description}</p>
+                                <p className="item-price">Price: LKR.{price}</p>
+
+                                <Divider style={{ width: "100%", margin: "10px 0" }} />
+                                {item.price === "" && (
+                                    <RadioGroup
+                                        row
+                                        value={selectedSize}
+                                        onChange={(e) => handleRadioChange(index, e.target.value)}
+                                        className="size-options"
+                                    >
+                                        <FormControlLabel
+                                            value="smallprice"
+                                            control={<Radio sx={{
+                                                color: "#888",
+                                                '&.Mui-checked': {
+                                                    color: "var(--primary-color)", // 🔵 custom active color
+                                                },
+                                            }} />}
+                                            label="Small"
+                                        />
+                                        <FormControlLabel
+                                            value="mediumprice"
+                                            control={<Radio sx={{
+                                                color: "#888",
+                                                '&.Mui-checked': {
+                                                    color: "var(--primary-color)",
+                                                },
+                                            }} />}
+                                            label="Medium"
+                                        />
+                                        <FormControlLabel
+                                            value="largeprice"
+                                            control={<Radio sx={{
+                                                color: "#888",
+                                                '&.Mui-checked': {
+                                                    color: "var(--primary-color)",
+                                                },
+                                            }} />}
+                                            label="Large"
+                                        />
+                                    </RadioGroup>
+                                )}
+
+                                <Button variant="contained" onClick={() => handleAddToPlate(item, selectedSize)} className="add-to-cart-button">Add to Plate</Button>
+
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-
-            <Divider style={{ width: "100%", margin: "10px 0" }} />
-
-            <div className="items-outer">
-                {filteredItems.map((item, index) => {
-                    const selectedSize = radioValues[index] || "smallprice";
-                    const price = item.price === ""
-                        ? item[selectedSize]
-                        : item.price;
-
-                    return (
-                        <div key={index} className="item-card">
-                            <img src={item.image} alt={item.name} className="item-image" />
-                            <h3 className="item-name">{item.name}</h3>
-                            <p className="item-description">{item.description}</p>
-                            <p className="item-price">Price: LKR.{price}</p>
-
-                            <Divider style={{ width: "100%", margin: "10px 0" }} />
-                            {item.price === "" && (
-                                <RadioGroup
-                                    row
-                                    value={selectedSize}
-                                    onChange={(e) => handleRadioChange(index, e.target.value)}
-                                    className="size-options"
-                                >
-                                    <FormControlLabel
-                                        value="smallprice"
-                                        control={<Radio sx={{
-                                            color: "#888",
-                                            '&.Mui-checked': {
-                                                color: "var(--primary-color)", // 🔵 custom active color
-                                            },
-                                        }} />}
-                                        label="Small"
-                                    />
-                                    <FormControlLabel
-                                        value="mediumprice"
-                                        control={<Radio sx={{
-                                            color: "#888",
-                                            '&.Mui-checked': {
-                                                color: "var(--primary-color)",
-                                            },
-                                        }} />}
-                                        label="Medium"
-                                    />
-                                    <FormControlLabel
-                                        value="largeprice"
-                                        control={<Radio sx={{
-                                            color: "#888",
-                                            '&.Mui-checked': {
-                                                color: "var(--primary-color)",
-                                            },
-                                        }} />}
-                                        label="Large"
-                                    />
-                                </RadioGroup>
-                            )}
-
-                            <Button variant="contained" onClick={() => handleAddToPlate(item, selectedSize)} className="add-to-cart-button">Add to Plate</Button>
-
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+            <Footer />
+        </>
+        
     );
 }

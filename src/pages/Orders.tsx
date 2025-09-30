@@ -2,6 +2,7 @@ import { Divider, IconButton, TextField } from "@mui/material"
 import "../styles/home.css"
 import { Search } from "@mui/icons-material"
 import React from "react";
+import Footer from "./Footer";
 
 export default function Orders() {
 
@@ -43,7 +44,7 @@ export default function Orders() {
                 )}
             </div>
 
-
+            <Footer />
         </div>
     )
 }

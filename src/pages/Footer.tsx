@@ -50,7 +50,7 @@ export default function Footer() {
                         <br />
                         <a className="footer-links" href="drinks">Drinks</a>
                         <br />
-                        <a className="footer-links" href="desserts">Desserts</a>
+                        <a className="footer-links" href="deserts">Desserts</a>
                     </div>
                     <div className="sub-footer-inner">                        
                         <span style={{fontWeight: "bold", fontSize: "15px"}}>Legal</span>
